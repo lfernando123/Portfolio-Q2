@@ -14,5 +14,5 @@ This project involves web scraping, data loading to AWS RDS MySQL, and explorato
 ## Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/ds-project.git
-   cd ds-project
+   git clone https://github.com/lfernando123/Portfolio-Q2.git
+   cd Portfolio-Q2
