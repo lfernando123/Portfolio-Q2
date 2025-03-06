@@ -13,11 +13,11 @@ def scrape_and_load_to_rds():
     prices = [book.find("p", class_="price_color").text.strip().replace("£", "") for book in soup.find_all("article", class_="product_pod")]
 
     # RDS MySQL connection details
-    host = "mysql-db.xxxxxx.us-east-1.rds.amazonaws.com"  # Replace with your endpoint
+    host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"  # Replace with your endpoint
     port = 3306
     user = "admin"  # Replace with your master username
-    password = "your-password"  # Replace with your master password
-    database = "booksdb"  # Replace with your database name
+    password = "m7gYSSJdL0Vk0bW"  # Replace with your master password
+    database = "database-1"  # Replace with your database name
 
     # Establish connection
     conn = pymysql.connect(
