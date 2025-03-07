@@ -1,4 +1,3 @@
-# scripts/scrape.py
 import requests
 from bs4 import BeautifulSoup
 import pymysql
@@ -17,17 +16,23 @@ def scrape_and_load_to_rds():
     port = 3306
     user = "admin"  # Replace with your master username
     password = "m7gYSSJdL0Vk0bW"  # Replace with your master password
-    database = "database-1"  # Replace with your database name
+    database = "dbBOOKS"  # Replace with your database name
 
-    # Establish connection
+    # Connect to MySQL **without specifying a database first**
     conn = pymysql.connect(
         host=host,
         port=port,
         user=user,
-        password=password,
-        database=database
+        password=password
     )
     cursor = conn.cursor()
+
+    # Create database if it doesn't exist
+    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
+    conn.commit()
+    
+    # Now, connect to the database
+    conn.select_db(database)
 
     # Create a table (if it doesn't exist)
     create_table_query = """
@@ -53,3 +58,4 @@ def scrape_and_load_to_rds():
 
 if __name__ == "__main__":
     scrape_and_load_to_rds()
+# 
