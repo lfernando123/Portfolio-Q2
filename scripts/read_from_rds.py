@@ -4,11 +4,11 @@ import pandas as pd
 
 def read_from_rds():
     # RDS MySQL connection details
-    host = "mysql-db.xxxxxx.us-east-1.rds.amazonaws.com"  # Replace with your endpoint
+    host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"
     port = 3306
-    user = "admin"  # Replace with your master username
-    password = "your-password"  # Replace with your master password
-    database = "booksdb"  # Replace with your database name
+    user = "admin"
+    password = "m7gYSSJdL0Vk0bW"
+    database = "dbBOOKS"
 
     # Establish connection
     conn = pymysql.connect(

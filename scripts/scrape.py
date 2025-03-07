@@ -12,13 +12,13 @@ def scrape_and_load_to_rds():
     prices = [book.find("p", class_="price_color").text.strip().replace("£", "") for book in soup.find_all("article", class_="product_pod")]
 
     # RDS MySQL connection details
-    host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"  # Replace with your endpoint
+    host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"
     port = 3306
-    user = "admin"  # Replace with your master username
-    password = "m7gYSSJdL0Vk0bW"  # Replace with your master password
-    database = "dbBOOKS"  # Replace with your database name
+    user = "admin"
+    password = "m7gYSSJdL0Vk0bW"
+    database = "dbBOOKS"
 
-    # Connect to MySQL **without specifying a database first**
+    # Connect to MySQL
     conn = pymysql.connect(
         host=host,
         port=port,
@@ -31,7 +31,7 @@ def scrape_and_load_to_rds():
     cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
     conn.commit()
     
-    # Now, connect to the database
+    # connect to the database
     conn.select_db(database)
 
     # Create a table (if it doesn't exist)
@@ -39,7 +39,7 @@ def scrape_and_load_to_rds():
     CREATE TABLE IF NOT EXISTS Books (
         id INT AUTO_INCREMENT PRIMARY KEY,
         Title VARCHAR(255),
-        Price FLOAT
+        Price VARCHAR(20)
     );
     """
     cursor.execute(create_table_query)
