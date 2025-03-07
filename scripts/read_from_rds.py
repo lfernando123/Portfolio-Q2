@@ -20,7 +20,7 @@ def read_from_rds():
     )
 
     # Query to fetch data
-    query = "SELECT * FROM Books"
+    query = "SELECT * FROM tBooks"
     df = pd.read_sql(query, conn)
 
     # Close the connection
