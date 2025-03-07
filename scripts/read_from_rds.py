@@ -2,7 +2,7 @@
 import pymysql
 import pandas as pd
 
-def read_from_rds():
+def read_data():
     # RDS MySQL connection details
     host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"
     port = 3306

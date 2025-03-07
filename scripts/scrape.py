@@ -10,7 +10,7 @@ def scrape_and_load_to_rds():
     availabilities = []
 
     # Loop through the first 5 pages (for simplicity)
-    for page in range(1, 50):
+    for page in range(1, 20):
         url = f"http://books.toscrape.com/catalogue/page-{page}.html"
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -46,9 +46,9 @@ def scrape_and_load_to_rds():
     )
     cursor = conn.cursor()
 
-    # Create database if it doesn't exist
-    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
-    conn.commit()
+    # # Create database if it doesn't exist
+    # cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
+    # conn.commit()
     
     # connect to the database
     conn.select_db(database)
@@ -57,18 +57,18 @@ def scrape_and_load_to_rds():
     # cursor.execute(drop_table_query)
     # conn.commit()
 
-    # Create a table (if it doesn't exist)
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS tBooks (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        Title VARCHAR(255),
-        Price FLOAT,
-        Rating VARCHAR(10),
-        Availability VARCHAR(20)
-    );
-    """
-    cursor.execute(create_table_query)
-    conn.commit()
+    # # Create a table (if it doesn't exist)
+    # create_table_query = """
+    # CREATE TABLE IF NOT EXISTS tBooks (
+    #     id INT AUTO_INCREMENT PRIMARY KEY,
+    #     Title VARCHAR(255),
+    #     Price FLOAT,
+    #     Rating VARCHAR(10),
+    #     Availability VARCHAR(20)
+    # );
+    # """
+    # cursor.execute(create_table_query)
+    # conn.commit()
 
     # Insert scraped data into the table
     for title, price, rating, availability in zip(titles, prices, ratings, availabilities):
