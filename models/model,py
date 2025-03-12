@@ -1,0 +1,69 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+import pymysql
+
+
+# RDS MySQL connection details
+host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"
+port = 3306
+user = "admin"
+password = "m7gYSSJdL0Vk0bW"
+database = "dbBOOKS"
+
+# Establish connection
+conn = pymysql.connect(
+    host=host,
+    port=port,
+    user=user,
+    password=password,
+    database=database
+)
+
+# Query to fetch data
+query = "SELECT * FROM tBooks"
+df = pd.read_sql(query, conn)
+
+# Close the connection
+conn.close()
+
+
+# Convert "Rating" to numerical values
+rating_map = {'One': 1, 'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5}
+df['Rating_num'] = df['Rating'].map(rating_map)
+
+# Define features (X) and target (y)
+X = df[['Rating_num', 'Category', 'Availability']]  # Features
+y = df['Price']  # Target variable
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Preprocessing: One-hot encode categorical variables ('Category' and 'Availability')
+# Use handle_unknown='ignore' to avoid errors for unknown categories
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('cat', OneHotEncoder(handle_unknown='ignore'), ['Category', 'Availability'])  # One-hot encode categorical columns
+    ],
+    remainder='passthrough'  # Keep numerical columns as they are
+)
+
+# Create a pipeline with preprocessing and linear regression
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),  # Preprocess the data
+    ('regressor', LinearRegression())  # Linear Regression model
+])
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+r2 = r2_score(y_test, y_pred)
+print(f"R-squared (R²) value: {r2:.2f}")
