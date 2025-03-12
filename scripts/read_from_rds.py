@@ -20,7 +20,7 @@ def read_data():
     )
 
     # Query to fetch data
-    query = "SELECT * FROM tBooks where Rating = 'One'"
+    query = "SELECT * FROM tBooks"
     df = pd.read_sql(query, conn)
 
     # Close the connection
