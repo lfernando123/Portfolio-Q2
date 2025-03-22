@@ -5,8 +5,10 @@ from sklearn.metrics import r2_score
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
 import pymysql
-
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 
 # RDS MySQL connection details
 host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"
@@ -31,23 +33,22 @@ df = pd.read_sql(query, conn)
 # Close the connection
 conn.close()
 
-
 # Convert "Rating" to numerical values
 rating_map = {'One': 1, 'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5}
 df['Rating_num'] = df['Rating'].map(rating_map)
 
 # Define features (X) and target (y)
-X = df[['Rating_num', 'Category', 'Availability']]  # Features
+X = df[['Rating_num', 'Category', 'Availability', 'Title']]  # Include 'Title' as a feature
 y = df['Price']  # Target variable
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Preprocessing: One-hot encode categorical variables ('Category' and 'Availability')
-# Use handle_unknown='ignore' to avoid errors for unknown categories
+# Preprocessing: One-hot encode categorical variables and vectorize text data
 preprocessor = ColumnTransformer(
     transformers=[
-        ('cat', OneHotEncoder(handle_unknown='ignore'), ['Category', 'Availability'])  # One-hot encode categorical columns
+        ('cat', OneHotEncoder(handle_unknown='ignore'), ['Category', 'Availability']),  # One-hot encode categorical columns
+        ('text', TfidfVectorizer(max_features=100), 'Title')  # Vectorize 'Title' using TF-IDF
     ],
     remainder='passthrough'  # Keep numerical columns as they are
 )
