@@ -7,8 +7,6 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pymysql
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 
 # RDS MySQL connection details
 host = "database-1.cvaim2ssqz52.ap-south-1.rds.amazonaws.com"
